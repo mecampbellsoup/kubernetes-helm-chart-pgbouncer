@@ -6,11 +6,10 @@
 [databases]
 {{- range $k, $v := .Values.databases }}
 
-{{- $requiredMsg := printf ".Values.databases.%v needs to include .dbname" $k }}
 {{- if $root.Values.global.namespacedDatabases }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ required $requiredMsg $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} {{ if $v.dbname }}dbname={{ $root.Release.Namespace | replace "-" "_"}}_{{ $v.dbname }}{{ end }}
 {{- else }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} dbname={{ required $requiredMsg $v.dbname }}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.auth_user }}auth_user={{ $v.auth_user }}{{end}} {{ if $v.dbname }}dbname={{ $v.dbname }}{{ end }}
 {{- end }}
 
 {{- end }}
